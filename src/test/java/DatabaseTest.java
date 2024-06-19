@@ -30,15 +30,8 @@ public class DatabaseTest {
 
 
     @Test
-    public void ProductTest() throws IOException {
-        dt.setup();
-        Message message = new Message(1, 1, "Buckwheat/This is groats/Morning/1/50/Food");
-        byte[] msg = creator.create(message);
-        receiver.receiveMessage(msg);
-    }
-
-    @Test
     public void createProductTest(){
+        dt.setup();
         Message message1 = new Message(1, 1, "Buckwheat/This is groats/Morning/1/50/Food");
         String responce1 = processor.process(message1);
         assertEquals("Product has been successfully created: Buckwheat", responce1);
@@ -51,7 +44,12 @@ public class DatabaseTest {
     public void readProductTest(){
         Message message1 = new Message(2, 1, "Buckwheat");
         String responce1 = processor.process(message1);
-        assertEquals("Buckwheat", responce1);
+        assertEquals("Product Name: Buckwheat\n" +
+                "Description: This is groats\n" +
+                "Producer: Morning\n" +
+                "Amount: 2\n" +
+                "Price: 75.0\n" +
+                "Group Name: Food\n", responce1);
     }
 
     @Test
@@ -63,9 +61,11 @@ public class DatabaseTest {
 
     @Test
     public void listByCriteriaProductTest(){
-        Message message1 = new Message(5, 1, "price");
+        Message message1 = new Message(5, 1, "producer");
         String responce1 = processor.process(message1);
-        assertEquals("Pasta", responce1);
+        assertEquals("Products sorted by producer:\n" +
+                "Product: Pasta, Description: This is bakery product, Producer: Lala, Amount: 3, Price: 150,00, Group_Name: Food\n" +
+                "Product: Buckwheat, Description: This is groats, Producer: Morning, Amount: 2, Price: 75,00, Group_Name: Food\n", responce1);
     }
 
     @Test
